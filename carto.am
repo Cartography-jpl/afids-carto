@@ -1,0 +1,175 @@
+if BUILD_CARTO
+lib_LTLIBRARIES += libcarto.la
+# See discussion in vicar_rtl.am for description of versioning
+EXTRA_libcarto_la_DEPENDENCIES = $(VICAR_RTL_BUILD_DEPEND) $(GSL_TARGET)
+libcarto_la_LDFLAGS = -version-info 1:0:0
+libcarto_la_LIBADD = $(VICAR_RTL_LIBS) $(GSL_LIBS) $(CODE_COVERAGE_LIBS)
+libcarto_la_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS) 
+libcarto_la_CPPFLAGS+= $(GSL_CFLAGS) -I$(srcdir)/$(cartoinc)
+libcarto_la_CPPFLAGS+= $(CODE_COVERAGE_CPPFLAGS)
+libcarto_la_CXXFLAGS = $(AM_CXXFLAGS) $(CODE_COVERAGE_CXXFLAGS)
+libcarto_la_CFLAGS = $(AM_CFLAGS) $(CODE_COVERAGE_CFLAGS)
+
+pkgconfig_DATA += carto/carto.pc
+
+cartoinc_HEADERS = @cartoinc@/carto/astroreference_camera.h
+cartoinc_HEADERS+= @cartoinc@/carto/atteph_convert.h
+cartoinc_HEADERS+= @cartoinc@/carto/burl.h
+cartoinc_HEADERS+= @cartoinc@/carto/camera_frame.h
+cartoinc_HEADERS+= @cartoinc@/carto/cartoClassUtils.h
+cartoinc_HEADERS+= @cartoinc@/carto/cartoGridUtils.h
+cartoinc_HEADERS+= @cartoinc@/carto/cartoGtUtils.h
+cartoinc_HEADERS+= @cartoinc@/carto/cartoLinkedList.h
+cartoinc_HEADERS+= @cartoinc@/carto/cartoLoggerUtils.h
+cartoinc_HEADERS+= @cartoinc@/carto/cartoLsqUtils.h
+cartoinc_HEADERS+= @cartoinc@/carto/cartoMatUtils.h
+cartoinc_HEADERS+= @cartoinc@/carto/cartoMemUtils.h
+cartoinc_HEADERS+= @cartoinc@/carto/cartoRpcUtils.h
+cartoinc_HEADERS+= @cartoinc@/carto/cartoSortUtils.h
+cartoinc_HEADERS+= @cartoinc@/carto/cartoStrUtils.h
+cartoinc_HEADERS+= @cartoinc@/carto/cartoTaeUtils.h
+cartoinc_HEADERS+= @cartoinc@/carto/cartoTieUtils.h
+cartoinc_HEADERS+= @cartoinc@/carto/cartoVicarProtos.h
+cartoinc_HEADERS+= @cartoinc@/carto/cblas.h
+cartoinc_HEADERS+= @cartoinc@/carto/count_lines.h
+cartoinc_HEADERS+= @cartoinc@/carto/csvd.h
+cartoinc_HEADERS+= @cartoinc@/carto/earth_coordinates.h
+cartoinc_HEADERS+= @cartoinc@/carto/endianness.h
+cartoinc_HEADERS+= @cartoinc@/carto/eos_coords.h
+cartoinc_HEADERS+= @cartoinc@/carto/ephreference_camera.h
+cartoinc_HEADERS+= @cartoinc@/carto/estimate_affine_projection.h
+cartoinc_HEADERS+= @cartoinc@/carto/estimate_wpp_camera.h
+cartoinc_HEADERS+= @cartoinc@/carto/extract_azr.h
+cartoinc_HEADERS+= @cartoinc@/carto/fgetl.h
+cartoinc_HEADERS+= @cartoinc@/carto/georeference_camera.h
+cartoinc_HEADERS+= @cartoinc@/carto/hdfIncludes.h
+cartoinc_HEADERS+= @cartoinc@/carto/imageio_return_values.h
+cartoinc_HEADERS+= @cartoinc@/carto/imageio_types.h
+cartoinc_HEADERS+= @cartoinc@/carto/io_flat.h
+cartoinc_HEADERS+= @cartoinc@/carto/io_view.h
+cartoinc_HEADERS+= @cartoinc@/carto/least_squares.h
+cartoinc_HEADERS+= @cartoinc@/carto/mat33.h
+cartoinc_HEADERS+= @cartoinc@/carto/mparse.h
+cartoinc_HEADERS+= @cartoinc@/carto/pfx.h
+cartoinc_HEADERS+= @cartoinc@/carto/pinv.h
+cartoinc_HEADERS+= @cartoinc@/carto/qmalloc.h
+cartoinc_HEADERS+= @cartoinc@/carto/quaternion.h
+cartoinc_HEADERS+= @cartoinc@/carto/ray_intersect_ellipsoid.h
+cartoinc_HEADERS+= @cartoinc@/carto/rodrigues.h
+cartoinc_HEADERS+= @cartoinc@/carto/rpc.h
+cartoinc_HEADERS+= @cartoinc@/carto/rpc_to_wpp.h
+cartoinc_HEADERS+= @cartoinc@/carto/safe_sqrt.h
+cartoinc_HEADERS+= @cartoinc@/carto/shapefil.h
+cartoinc_HEADERS+= @cartoinc@/carto/slerp.h
+cartoinc_HEADERS+= @cartoinc@/carto/sprintf_alloc.h
+cartoinc_HEADERS+= @cartoinc@/carto/strsel.h
+cartoinc_HEADERS+= @cartoinc@/carto/textread.h
+cartoinc_HEADERS+= @cartoinc@/carto/time_conversion.h
+cartoinc_HEADERS+= @cartoinc@/carto/time_utils.h
+cartoinc_HEADERS+= @cartoinc@/carto/tokenize.h
+cartoinc_HEADERS+= @cartoinc@/carto/utils_return_values.h
+cartoinc_HEADERS+= @cartoinc@/carto/verbosity_manager.h
+cartoinc_HEADERS+= @cartoinc@/carto/ImageUtils.h
+cartoinc_HEADERS+= @cartoinc@/carto/ibisControlMapper.h
+cartoinc_HEADERS+= @cartoinc@/carto/ibishelper.h
+cartoinc_HEADERS+= @cartoinc@/carto/lsqibis.h
+cartoinc_HEADERS+= @cartoinc@/carto/lsqequation.h
+cartoinc_HEADERS+= @cartoinc@/carto/RapidEyeManager.h
+cartoinc_HEADERS+= @cartoinc@/carto/WV2Manager.h
+cartoinc_HEADERS+= @cartoinc@/carto/GE1Manager.h
+cartoinc_HEADERS+= @cartoinc@/carto/QBManager.h
+cartoinc_HEADERS+= @cartoinc@/carto/IKManager.h
+cartoinc_HEADERS+= @cartoinc@/carto/PleiadesManager.h
+cartoinc_HEADERS+= @cartoinc@/carto/SpotManager.h
+cartoinc_HEADERS+= @cartoinc@/carto/gnuplotchar.inc
+
+EXTRA_DIST+= $(cartoinc_HEADERS)
+
+libcarto_la_SOURCES =
+libcarto_la_SOURCES+= @srccarto@/cartoClassUtils.c
+libcarto_la_SOURCES+= @srccarto@/cartoGtUtils.c
+libcarto_la_SOURCES+= @srccarto@/cartoLsqUtils.c
+libcarto_la_SOURCES+= @srccarto@/cartoMatUtils.c
+libcarto_la_SOURCES+= @srccarto@/cartoMemUtils.c
+libcarto_la_SOURCES+= @srccarto@/cartoSortUtils.c
+libcarto_la_SOURCES+= @srccarto@/cartoStrUtils.c
+libcarto_la_SOURCES+= @srccarto@/cartoLinkedList.c
+libcarto_la_SOURCES+= @srccarto@/cartoLoggerUtils.c
+libcarto_la_SOURCES+= @srccarto@/cartoTaeUtils.c
+libcarto_la_SOURCES+= @srccarto@/cartoGridUtils.c
+libcarto_la_SOURCES+= @srccarto@/cartoTieUtils.c
+libcarto_la_SOURCES+= @srccarto@/cartoRpcUtils.c
+libcarto_la_SOURCES+= @srccarto@/camera_frame.c
+libcarto_la_SOURCES+= @srccarto@/cblas.c
+libcarto_la_SOURCES+= @srccarto@/csvd.c
+libcarto_la_SOURCES+= @srccarto@/earth_coordinates.c
+libcarto_la_SOURCES+= @srccarto@/eos_coords.c
+libcarto_la_SOURCES+= @srccarto@/estimate_affine_projection.c
+libcarto_la_SOURCES+= @srccarto@/qmalloc.c
+libcarto_la_SOURCES+= @srccarto@/verbosity_manager.c
+libcarto_la_SOURCES+= @srccarto@/io_view.c
+libcarto_la_SOURCES+= @srccarto@/time_conversion.c
+libcarto_la_SOURCES+= @srccarto@/mat33.c
+libcarto_la_SOURCES+= @srccarto@/least_squares.c
+libcarto_la_SOURCES+= @srccarto@/endianness.c
+libcarto_la_SOURCES+= @srccarto@/pfx.c
+libcarto_la_SOURCES+= @srccarto@/strsel.c
+libcarto_la_SOURCES+= @srccarto@/time_utils.c
+libcarto_la_SOURCES+= @srccarto@/count_lines.c
+libcarto_la_SOURCES+= @srccarto@/tokenize.c
+libcarto_la_SOURCES+= @srccarto@/fgetl.c
+libcarto_la_SOURCES+= @srccarto@/sprintf_alloc.c
+libcarto_la_SOURCES+= @srccarto@/pinv.c
+libcarto_la_SOURCES+= @srccarto@/estimate_wpp_camera.c
+libcarto_la_SOURCES+= @srccarto@/extract_azr.c
+libcarto_la_SOURCES+= @srccarto@/georeference_camera.c
+libcarto_la_SOURCES+= @srccarto@/rodrigues.c
+libcarto_la_SOURCES+= @srccarto@/quaternion.c
+libcarto_la_SOURCES+= @srccarto@/ray_intersect_ellipsoid.c
+libcarto_la_SOURCES+= @srccarto@/safe_sqrt.c
+libcarto_la_SOURCES+= @srccarto@/rpc.c
+libcarto_la_SOURCES+= @srccarto@/rpc_to_wpp.c
+libcarto_la_SOURCES+= @srccarto@/astroreference_camera.c
+libcarto_la_SOURCES+= @srccarto@/mparse.c
+libcarto_la_SOURCES+= @srccarto@/slerp.c
+libcarto_la_SOURCES+= @srccarto@/atteph_convert.c
+libcarto_la_SOURCES+= @srccarto@/textread.c
+libcarto_la_SOURCES+= @srccarto@/io_flat.c
+libcarto_la_SOURCES+= @srccarto@/ephreference_camera.c
+libcarto_la_SOURCES+= @srccarto@/shpopen.c
+libcarto_la_SOURCES+= @srccarto@/dbfopen.c
+libcarto_la_SOURCES+= @srccarto@/ImageUtils.c
+libcarto_la_SOURCES+= @srccarto@/ibisControlMapper.c
+libcarto_la_SOURCES+= @srccarto@/ibishelper.c
+libcarto_la_SOURCES+= @srccarto@/lsqibis.c
+libcarto_la_SOURCES+= @srccarto@/lsqequation.c
+libcarto_la_SOURCES+= @srccarto@/RapidEyeManager.c
+libcarto_la_SOURCES+= @srccarto@/WV2Manager.c
+libcarto_la_SOURCES+= @srccarto@/GE1Manager.c
+libcarto_la_SOURCES+= @srccarto@/QBManager.c
+libcarto_la_SOURCES+= @srccarto@/IKManager.c
+libcarto_la_SOURCES+= @srccarto@/PleiadesManager.c
+libcarto_la_SOURCES+= @srccarto@/SpotManager.c
+
+# Explicit dependency of a couple of programs on gsl being installed first.
+# This is needed because because we depend on the header files only 
+# installed when gsl is installed.
+if BUILD_GSL
+carto/src/libcarto_la-lsqequation.lo: $(GSL_TARGET)
+
+carto/src/libcarto_la-cartoClassUtils.lo: $(GSL_TARGET)
+endif
+# Don't think we need this any longer, but go ahead and leave commented
+# out until we are sure
+#install_carto_early: libcarto.la
+#	$(MKDIR_P) $(DESTDIR)$(libdir)
+#	$(MKDIR_P) $(DESTDIR)$(includedir)
+#	if test -f "$(DESTDIR)$(libdir)/libcarto.la"; then :; else \
+#          $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) libcarto.la "$(DESTDIR)$(libdir)"; \
+#          $(MAKE) install-cartoincHEADERS; \
+#        fi
+#else
+#install_carto_early:
+#	$(noop)
+
+endif

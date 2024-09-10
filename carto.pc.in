@@ -1,0 +1,12 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: carto
+Description: Carto library
+Version: @VERSION@
+Requires: vicar-rtl gsl
+Libs: -R${libdir} -L${libdir} -lcarto
+Cflags: -I${includedir}/carto -I${includedir}
+

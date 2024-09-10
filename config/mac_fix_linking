@@ -1,0 +1,93 @@
+#!/usr/bin/env python3
+""" This is used to fix linking on the Mac, so we can deliver AFIDS as a
+package. This includes copying system libraries into afids area if not
+already there, and updating paths to point to these.
+
+Usage:
+
+    mac_fix_linking <top install directory>
+
+"""
+
+import os
+import subprocess
+import re
+import shutil
+import sys
+
+def copy_library(base_dir, library):
+    dest = base_dir + "/lib/" + os.path.basename(library)
+    lnk_name = re.sub(r'\.\d+\.dylib', '.dylib', dest)
+    if(os.path.exists(dest)):
+        return
+    shutil.copyfile(library, dest)
+    if(not os.path.exists(lnk_name)):
+        os.symlink("./" + os.path.basename(library), lnk_name)
+    fix_file(base_dir, dest)
+
+def update_reference(base_dir, fname, library):
+    '''Update reference to base dir'''
+    rel_path = os.path.relpath(base_dir + "/lib/", os.path.dirname(fname))
+    if(rel_path == "."):
+        lpath = "@loader_path/" + os.path.basename(library)
+    else:
+        lpath = "@loader_path/" + rel_path + "/" + os.path.basename(library)
+    subprocess.run(["chmod", "+w", fname])
+    subprocess.run(["install_name_tool", "-change", library, lpath, fname], check=True)
+    
+def handle_library(base_dir, fname, library):
+    '''Process a library dependency'''
+    # Skip libraries that already use relative path
+    if(library[0] == "@"):
+        return;
+    if(re.match(r'/opt/local/lib', library)):
+        copy_library(base_dir, library)
+        update_reference(base_dir, fname, library)
+    if(re.match(base_dir + "/lib/", library)):
+        update_reference(base_dir, fname, library)
+
+# Report each path once
+path_list = set()
+def fix_file(base_dir, fname):
+    '''Fix reference in the given file, including copying dependencies'''
+    # Skip anything that isn't a regular file.
+    if((not os.path.isfile(fname) or os.path.islink(fname))):
+        return
+    # Skip a few file types that we have a lot of by extension, just to
+    # speed things up.
+    if(os.path.splitext(fname)[1] in [".py", ".pyc", ".html", ".dat", ".pdf",
+                                      ".pxd", ".png", ".txt", ".svg"]):
+        return
+    path = os.path.dirname(fname)
+    if(not path in path_list):
+        print("Doing " + path)
+        path_list.add(path)
+    base_dir = os.path.abspath(base_dir)
+    fname = os.path.abspath(fname)
+    res = subprocess.run(["otool", "-L", fname], 
+                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    if(re.search(b"not an object file", res.stdout)):
+        return
+    if(res.returncode):
+        raise RuntimeError("Call to otool failed for " + fname)
+    for i in res.stdout.split((b"\n")):
+        res = re.match(r'\t(.*) \(compatibility', i.decode("utf-8"))
+        if(res):
+            library = res.group(1)
+            handle_library(base_dir, fname, library)
+
+def fix_all(bname):
+    '''Top level function that steps through everything in given directory'''
+    path_list.clear()
+    for d in ["afids", "bin", "lib", "libexec", "vicar"]:
+        for root, dirs, files in os.walk(os.path.join(bname, d)):
+            for fname in files:
+                f = os.path.join(root, fname)
+                fix_file(bname, os.path.join(root, fname))
+
+if __name__ == '__main__':
+    if(len(sys.argv) != 2):
+        print(__doc__)
+        sys.exit(1)
+    fix_all(sys.argv[1])
+

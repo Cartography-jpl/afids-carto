@@ -1,0 +1,6 @@
+#!/bin/csh
+# Short routine to get the CPU value that VICAR wants things stored at.
+
+setenv V2TOP ./src/core-vicar/core-d
+source ./src/core-vicar/core-d/vicset1.csh >& /dev/null
+echo $VICCPU

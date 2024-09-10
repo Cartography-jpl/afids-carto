@@ -1,0 +1,16 @@
+#define  PROGRAM carto
+
+#define MODULE_LIST cartoGtUtils.c cartoLsqUtils.c cartoMatUtils.c  cartoMemUtils.c cartoSortUtils.c cartoStrUtils.c cartoLoggerUtils.c cartoTaeUtils.c cartoGridUtils.c cartoTieUtils.c cartoRpcUtils.c camera_frame.c cblas.c csvd.c earth_coordinates.c eos_coords.c estimate_affine_projection.c qmalloc.c verbosity_manager.c io_view.c time_conversion.c mat33.c least_squares.c endianness.c pfx.c strsel.c time_utils.c count_lines.c tokenize.c fgetl.c sprintf_alloc.c pinv.c estimate_wpp_camera.c extract_azr.c georeference_camera.c rodrigues.c quaternion.c ray_intersect_ellipsoid.c safe_sqrt.c rpc.c rpc_to_wpp.c astroreference_camera.c mparse.c slerp.c atteph_convert.c textread.c io_flat.c ephreference_camera.c shpopen.c dbfopen.c carto.c ImageUtils.c ibisControlMapper.c ibishelper.c lsqibis.c lsqequation.c AsterManager.c cloud_masks.c LandsatManager.c RapidEyeManager.c
+
+#define MAIN_LANG_C
+#define R2LIB
+
+/* Comment this out before delivery.*/
+#define DEBUG
+
+#define USES_ANSI_C
+
+#define LIB_HDF
+#define LIB_P2SUB
+#define LIB_TAE
+#define LIB_RTL

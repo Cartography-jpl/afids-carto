@@ -1,0 +1,14 @@
+To make a RPM for installing as a redhat package, we can do the following:
+
+1. Do a configure using the configure found in this file. Note that you
+   can either use "--with-afids-a" or leave it out, the afids a patch
+   is included in the distribution tar file in the first case, but not
+   the second.
+2. make distcheck. Note that this will *fail* because ossim doesn't have
+   an uninstall command. But you can make sure everthing builds first.
+   You can also just do make dist to skip the testing
+3. cp carto-1.0.tar.gz ~/rpmbuild/SOURCES/
+4. rpmbuild -ba <srcdir>/carto.spec
+
+We then have the RPMs ~/rpmbuild/RPMS/x86_64/carto-1.0-1.x86_64.rpm and
+~/rpmbuild/SRPMS/carto-1.0-1.src.rpm which can be copied to a repository.

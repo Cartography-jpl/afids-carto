@@ -1,0 +1,6 @@
+This is the Carto library.
+
+This directory contains a configure and Makefile, which can be used to
+build just this code. However if you are building the full afids system, the
+top level Makefile contains everything and you don't need a separate build
+here.
