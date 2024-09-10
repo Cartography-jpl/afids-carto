@@ -290,7 +290,7 @@ void LSQIBIS_deleteLsqIbis(LsqIbis *ibis)
    free(ibis->controlID);
    free(ibis->controlIDCnts);
 
-   IBISHELPER_closeIBIS(ibisfile);
+   IBISHELPER_closeIBIS(&ibisfile);
    free(ibis);
 }
 

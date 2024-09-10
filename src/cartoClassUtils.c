@@ -2,14 +2,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_permutation.h>
+#include <gsl/gsl_linalg.h>
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_errno.h>
 #include "carto/cartoClassUtils.h"
 #include "carto/ibishelper.h"
+
+void zmabend();
 
 /***********************************************/
 CLASS* CARTOCLASS_getClass()
@@ -182,7 +186,7 @@ void CARTOCLASS_setClassName(CLASS *c, char *name)
 }
 
 /***********************************************/
-checkAllocs(CLASS *c, CLASS_TMP *tmp)
+void checkAllocs(CLASS *c, CLASS_TMP *tmp)
 {
    if(c->cov_matrix_inv == NULL)
       c->cov_matrix_inv = gsl_matrix_alloc(c->cov_matrix->size1, c->cov_matrix->size2);
@@ -197,13 +201,14 @@ checkAllocs(CLASS *c, CLASS_TMP *tmp)
 int CARTOCLASS_calcGaussianDensityAtX(CLASS *c, gsl_vector *x, CLASS_TMP *tmp, double *dist)
 {
    int gnu_errno, dim;
-   double signum, det, mahaDist;
+   double det, mahaDist;
+   int signum;
 
    checkAllocs(c, tmp);
    gsl_set_error_handler_off();
    gsl_matrix_memcpy(tmp->LU, c->cov_matrix);
-   det = gsl_linalg_LU_det(tmp->LU);
    gnu_errno = gsl_linalg_LU_decomp(tmp->LU, tmp->LU_Perm, &signum);
+   det = gsl_linalg_LU_det(tmp->LU, signum);
 //   printf("inside gauss dens at x err: %d\n", gnu_errno);
    if(gnu_errno != GSL_SUCCESS) return gnu_errno;
    mahaDist = CARTOCLASS_getMahalanobisDist(c, x, tmp);
@@ -222,7 +227,7 @@ int CARTOCLASS_getMatrixInv(gsl_matrix *m, gsl_matrix *inv)
    gsl_matrix *mCopy;
    gsl_permutation *p;
    int gnu_errno;
-   double signum;
+   int signum;
 
    gsl_set_error_handler_off();
 
@@ -252,7 +257,7 @@ int CARTOCLASS_getMatrixInv(gsl_matrix *m, gsl_matrix *inv)
 int CARTOCLASS_setCovInv(CLASS *c, CLASS_TMP *tmp)
 {
    int gnu_errno;
-   double signum;
+   int signum;
 
    checkAllocs(c, tmp);
    gsl_set_error_handler_off();
